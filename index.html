@@ -92,3 +92,138 @@ select{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;border:2px
 </style>
 </head>
 <body>
+<nav class="bottom-nav">
+  <div class="nav-item active" onclick="showScreen('home')" id="nav-home"><div class="nav-icon">🏠</div><span id="nav-home-lbl">Hjem</span></div>
+  <div class="nav-item" onclick="showScreen('learn')" id="nav-learn"><div class="nav-icon">📚</div><span id="nav-learn-lbl">Lær</span></div>
+  <div class="nav-item" onclick="showScreen('skin')" id="nav-skin"><div class="nav-icon">🎨</div><span id="nav-skin-lbl">Utseende</span></div>
+  <div class="nav-item" onclick="showScreen('settings')" id="nav-settings"><div class="nav-icon">⚙️</div><span id="nav-settings-lbl">Innstillinger</span></div>
+  <div class="nav-item vip" onclick="showScreen('vip')" id="nav-vip"><div class="nav-icon">👑</div><span>VIP</span></div>
+</nav>
+<div class="screen active" id="screen-home">
+  <div class="topbar"><h1>Zorbish</h1><div class="streak-badge">🔥<span id="streak-display">0</span></div></div>
+  <div class="scroll-content">
+    <div class="hero"><h2 id="hero-greeting">Zlov!</h2><p id="hero-sub">Fortsett å lære Zorbish i dag</p><div style="display:flex;justify-content:space-between;margin-top:8px;"><span id="hero-xp" style="font-size:13px;opacity:0.9;">0 XP</span><span id="hero-level" style="font-size:13px;opacity:0.9;">Nivå 1</span></div><div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-bar" style="width:0%"></div></div></div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-n" id="stat-streak">0</div><div class="stat-l">🔥 REKKE</div></div>
+      <div class="stat-card"><div class="stat-n" id="stat-xp">0</div><div class="stat-l">⚡ XP</div></div>
+      <div class="stat-card"><div class="stat-n" id="stat-words">0</div><div class="stat-l">📖 ORD</div></div>
+    </div>
+    <div style="margin:12px 16px 6px;"><h2 style="font-size:20px;">Velg leksjon</h2></div>
+    <div class="lesson-list" id="lesson-list"></div>
+    <div style="height:16px;"></div>
+  </div>
+</div>
+<div class="screen" id="screen-learn">
+  <div class="topbar"><button onclick="showScreen('home')" style="background:none;border:none;font-size:24px;cursor:pointer;">←</button><h1 id="learn-title">Leksjon</h1><div style="width:40px;"></div></div>
+  <div class="progress-track"><div class="progress-fill" id="learn-progress" style="width:0%"></div></div>
+  <div class="question-card"><div class="question-label" id="q-label">Hva betyr dette?</div><div class="question-word" id="q-word">–</div></div>
+  <div class="choices" id="choices"></div>
+  <div class="feedback-bar" id="feedback-bar"></div>
+  <div style="margin:12px 16px;"><button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" style="display:none;">Neste ➜</button></div>
+  <div style="text-align:center;margin-top:4px;"><span id="q-counter" style="font-size:13px;color:var(--muted);font-weight:700;"></span></div>
+</div>
+<div class="screen" id="screen-done">
+  <div class="done-wrap">
+    <div class="big-emoji" id="done-emoji">🎉</div>
+    <h2 id="done-title">Bra jobba!</h2>
+    <p id="done-msg">Du fullførte leksjonen!</p>
+    <div class="card" style="width:100%;margin-bottom:20px;">
+      <div class="stats-grid" style="margin:0;">
+        <div class="stat-card"><div class="stat-n" id="done-score">0</div><div class="stat-l">RIKTIGE</div></div>
+        <div class="stat-card"><div class="stat-n" id="done-xp">0</div><div class="stat-l">XP TJENT</div></div>
+        <div class="stat-card"><div class="stat-n" id="done-streak-d">0</div><div class="stat-l">🔥 REKKE</div></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="showScreen('home')" style="margin-bottom:10px;">Tilbake til hjem</button>
+    <button class="btn btn-ghost" onclick="startLesson(currentLesson)">Spill igjen</button>
+  </div>
+</div>
+<div class="screen" id="screen-skin">
+  <div class="topbar"><h1>Utseende</h1></div>
+  <div class="scroll-content">
+    <div style="display:flex;justify-content:center;margin:16px 0 8px;"><canvas id="avatar-canvas" width="120" height="140"></canvas></div>
+    <div class="skin-section"><h3>Kjønn</h3><div class="skin-opts" id="gender-opts"><div class="skin-opt active" onclick="setSkin('gender','boy')">👦 Gutt</div><div class="skin-opt" onclick="setSkin('gender','girl')">👧 Jente</div><div class="skin-opt" onclick="setSkin('gender','non')">🧑 Non-binary</div></div></div>
+    <div class="skin-section"><h3>Hårfarge</h3><div class="skin-opts" id="hair-opts"><div class="skin-opt active" data-hair="brown" onclick="setSkin('hair','brown')" style="color:#6d4c41;">🟤 Brun</div><div class="skin-opt" data-hair="black" onclick="setSkin('hair','black')" style="color:#212121;">⚫ Svart</div><div class="skin-opt" data-hair="blonde" onclick="setSkin('hair','blonde')" style="color:#f9a825;">🟡 Blond</div><div class="skin-opt" data-hair="red" onclick="setSkin('hair','red')" style="color:#bf360c;">🔴 Rød</div><div class="skin-opt" data-hair="blue" onclick="setSkin('hair','blue')" style="color:#1565c0;">🔵 Blå</div><div class="skin-opt" data-hair="pink" onclick="setSkin('hair','pink')" style="color:#c2185b;">🩷 Rosa</div></div></div>
+    <div class="skin-section"><h3>Genserfarge</h3><div class="color-swatches" id="sweater-swatches"></div></div>
+    <div class="skin-section"><h3>Hudtone</h3><div class="skin-opts" id="skin-tone-opts"><div class="skin-opt active" onclick="setSkin('tone','light')">🌸 Lys</div><div class="skin-opt" onclick="setSkin('tone','medium')">🌻 Medium</div><div class="skin-opt" onclick="setSkin('tone','dark')">🌑 Mørk</div></div></div>
+    <div style="height:16px;"></div>
+  </div>
+</div>
+<div class="screen" id="screen-settings">
+  <div class="topbar"><h1>Innstillinger</h1></div>
+  <div class="scroll-content">
+    <div class="card">
+      <div class="setting-row"><div><div class="setting-label">Språk</div></div><select id="lang-select" onchange="setLang(this.value)"><option value="no">🇳🇴 Norsk</option><option value="en">🇬🇧 English</option><option value="de">🇩🇪 Deutsch</option><option value="fr">🇫🇷 Français</option><option value="es">🇪🇸 Español</option><option value="sv">🇸🇪 Svenska</option><option value="da">🇩🇰 Dansk</option></select></div>
+      <div class="setting-row"><div><div class="setting-label">Vanskelighetsgrad</div></div><select id="diff-select" onchange="setDiff(this.value)"><option value="easy">🟢 Lett</option><option value="medium" selected>🟡 Middels</option><option value="hard">🔴 Hard</option></select></div>
+      <div class="setting-row"><div><div class="setting-label">Bakgrunnsfarge</div></div><div class="color-swatches" id="bg-swatches"></div></div>
+      <div class="setting-row"><div><div class="setting-label">Navn</div></div><input type="text" id="name-input" placeholder="Ditt navn" style="border:2px solid #e0e0f0;border-radius:10px;padding:6px 10px;font-family:Nunito;font-size:14px;font-weight:700;outline:none;width:120px;" oninput="saveName(this.value)"></div>
+    </div>
+    <div style="height:16px;"></div>
+  </div>
+</div>
+<div class="screen" id="screen-vip">
+  <div class="topbar"><h1 style="color:#FFD700;">👑 Emilian Witzøe VIP's</h1></div>
+  <div class="scroll-content">
+    <div id="vip-lock-view">
+      <div class="vip-header"><h2>Eksklusiv VIP</h2><p>Kun for utvalgte</p></div>
+      <div style="text-align:center;padding:40px 20px;">
+        <div style="font-size:64px;margin-bottom:16px;">🔐</div>
+        <p style="font-size:16px;font-weight:700;margin-bottom:20px;">Skriv inn VIP-passordet</p>
+        <input class="vip-input" type="password" id="vip-pw-input" placeholder="Passord..." onkeydown="if(event.key==='Enter')checkVIP()">
+        <p id="vip-error" style="color:var(--danger);font-size:13px;font-weight:700;min-height:20px;margin-bottom:10px;"></p>
+        <button class="btn" style="background:linear-gradient(135deg,#FFD700,#FFA000);color:#5a3e00;font-size:16px;" onclick="checkVIP()">Lås opp 🔓</button>
+      </div>
+    </div>
+    <div id="vip-unlocked-view" style="display:none;">
+      <div class="vip-header"><h2>👑 VIP Lounge</h2><p>Velkommen, VIP-medlem!</p></div>
+      <div style="margin:12px 16px 6px;display:flex;align-items:center;justify-content:space-between;"><h2 style="font-size:20px;">VIP Chat</h2><span class="vip-tag">LIVE</span></div>
+      <div class="chat-area" id="chat-area"></div>
+      <div class="chat-input-row"><input type="text" id="chat-input" placeholder="Skriv en melding..." maxlength="200" onkeydown="if(event.key==='Enter')sendChat()"><button onclick="sendChat()">➤</button></div>
+      <div style="height:16px;"></div>
+    </div>
+  </div>
+</div>
+<script>
+const WORDS=[{z:'Zlov',translations:{no:'Hei',en:'Hello',de:'Hallo',fr:'Bonjour',es:'Hola',sv:'Hej',da:'Hej'},category:'greetings'},{z:'Snorx',translations:{no:'Ha det',en:'Goodbye',de:'Tschüss',fr:'Au revoir',es:'Adiós',sv:'Hej då',da:'Farvel'},category:'greetings'},{z:'Vrimi',translations:{no:'Ja',en:'Yes',de:'Ja',fr:'Oui',es:'Sí',sv:'Ja',da:'Ja'},category:'basics'},{z:'Plutz',translations:{no:'Nei',en:'No',de:'Nein',fr:'Non',es:'No',sv:'Nej',da:'Nej'},category:'basics'},{z:'Gorfel',translations:{no:'Kult',en:'Cool',de:'Cool',fr:'Cool',es:'Genial',sv:'Häftigt',da:'Fedt'},category:'basics'},{z:'Snaffi',translations:{no:'Politiet',en:'Police',de:'Polizei',fr:'Police',es:'Policía',sv:'Polis',da:'Politiet'},category:'world'},{z:'Blirp',translations:{no:'Foreldre',en:'Parents',de:'Eltern',fr:'Parents',es:'Padres',sv:'Föräldrar',da:'Forældre'},category:'family'},{z:'Zwerk',translations:{no:'Skole',en:'School',de:'Schule',fr:'École',es:'Escuela',sv:'Skola',da:'Skole'},category:'world'},{z:'Flonk',translations:{no:'Middag',en:'Dinner',de:'Abendessen',fr:'Dîner',es:'Cena',sv:'Middag',da:'Aftensmad'},category:'food'},{z:'Gruzzi',translations:{no:'Hemmelighet',en:'Secret',de:'Geheimnis',fr:'Secret',es:'Secreto',sv:'Hemlighet',da:'Hemmelighed'},category:'basics'},{z:'Vorrp',translations:{no:'Møtested',en:'Meeting place',de:'Treffpunkt',fr:'Lieu de rendez-vous',es:'Punto de encuentro',sv:'Mötesplats',da:'Mødested'},category:'world'},{z:'Sklim',translations:{no:'Stikk av',en:'Run away',de:'Abhauen',fr:'Fuis',es:'Huye',sv:'Spring',da:'Løb'},category:'actions'},{z:'Frobb',translations:{no:'Mat',en:'Food',de:'Essen',fr:'Nourriture',es:'Comida',sv:'Mat',da:'Mad'},category:'food'},{z:'Glixx',translations:{no:'Venn',en:'Friend',de:'Freund',fr:'Ami',es:'Amigo',sv:'Vän',da:'Ven'},category:'family'},{z:'Zrunk',translations:{no:'Fest',en:'Party',de:'Party',fr:'Fête',es:'Fiesta',sv:'Fest',da:'Fest'},category:'fun'},{z:'Bloff',translations:{no:'Søvn',en:'Sleep',de:'Schlaf',fr:'Sommeil',es:'Sueño',sv:'Sömn',da:'Søvn'},category:'basics'},{z:'Snurk',translations:{no:'Musikk',en:'Music',de:'Musik',fr:'Musique',es:'Música',sv:'Musik',da:'Musik'},category:'fun'},{z:'Gwork',translations:{no:'Arbeid',en:'Work',de:'Arbeit',fr:'Travail',es:'Trabajo',sv:'Arbete',da:'Arbejde'},category:'world'},{z:'Fluzz',translations:{no:'Kjærlighet',en:'Love',de:'Liebe',fr:'Amour',es:'Amor',sv:'Kärlek',da:'Kærlighed'},category:'feelings'},{z:'Sprox',translations:{no:'Latter',en:'Laughter',de:'Lachen',fr:'Rire',es:'Risa',sv:'Skratt',da:'Latter'},category:'feelings'}];
+const LESSONS=[{id:'greetings',icon:'👋',nameKey:'greetings',words:['Zlov','Snorx','Vrimi','Plutz'],xpPer:15},{id:'basics',icon:'⭐',nameKey:'basics',words:['Gorfel','Gruzzi','Bloff','Fluzz'],xpPer:15},{id:'family',icon:'👨‍👩‍👧',nameKey:'family',words:['Blirp','Glixx'],xpPer:20},{id:'world',icon:'🌍',nameKey:'world',words:['Snaffi','Zwerk','Vorrp','Gwork'],xpPer:20},{id:'food',icon:'🍕',nameKey:'food',words:['Flonk','Frobb'],xpPer:20},{id:'actions',icon:'🏃',nameKey:'actions',words:['Sklim'],xpPer:25},{id:'fun',icon:'🎉',nameKey:'fun',words:['Zrunk','Snurk'],xpPer:20},{id:'feelings',icon:'💖',nameKey:'feelings',words:['Fluzz','Sprox'],xpPer:20}];
+const LESSON_NAMES={no:{greetings:'Hilsener',basics:'Grunnleggende',family:'Familie',world:'Verden',food:'Mat',actions:'Handlinger',fun:'Moro',feelings:'Følelser'},en:{greetings:'Greetings',basics:'Basics',family:'Family',world:'World',food:'Food',actions:'Actions',fun:'Fun',feelings:'Feelings'},de:{greetings:'Begrüßungen',basics:'Grundlagen',family:'Familie',world:'Welt',food:'Essen',actions:'Aktionen',fun:'Spaß',feelings:'Gefühle'},fr:{greetings:'Salutations',basics:'Bases',family:'Famille',world:'Monde',food:'Nourriture',actions:'Actions',fun:'Amusement',feelings:'Sentiments'},es:{greetings:'Saludos',basics:'Básico',family:'Familia',world:'Mundo',food:'Comida',actions:'Acciones',fun:'Diversión',feelings:'Sentimientos'},sv:{greetings:'Hälsningar',basics:'Grunderna',family:'Familj',world:'Världen',food:'Mat',actions:'Handlingar',fun:'Roligt',feelings:'Känslor'},da:{greetings:'Hilsener',basics:'Grundlæggende',family:'Familie',world:'Verden',food:'Mad',actions:'Handlinger',fun:'Sjov',feelings:'Følelser'}};
+const TRANSLATIONS={no:{home:'Hjem',learn:'Lær',skin:'Utseende',settings:'Innstillinger',greeting:'Zlov!',sub:'Fortsett å lære Zorbish i dag',q_label:'Hva betyr dette på',q_label2:'Hva er dette på Zorbish?'},en:{home:'Home',learn:'Learn',skin:'Looks',settings:'Settings',greeting:'Zlov!',sub:'Keep learning Zorbish today',q_label:'What does this mean in',q_label2:'What is this in Zorbish?'},de:{home:'Startseite',learn:'Lernen',skin:'Aussehen',settings:'Einstellungen',greeting:'Zlov!',sub:'Zorbish weiter lernen',q_label:'Was bedeutet das auf',q_label2:'Was ist das auf Zorbish?'},fr:{home:'Accueil',learn:'Apprendre',skin:'Apparence',settings:'Paramètres',greeting:'Zlov!',sub:'Continue à apprendre le Zorbish',q_label:'Que signifie ceci en',q_label2:'Comment dit-on en Zorbish?'},es:{home:'Inicio',learn:'Aprender',skin:'Apariencia',settings:'Ajustes',greeting:'Zlov!',sub:'Sigue aprendiendo Zorbish hoy',q_label:'Qué significa esto en',q_label2:'Cómo se dice en Zorbish?'},sv:{home:'Hem',learn:'Lär',skin:'Utseende',settings:'Inställningar',greeting:'Zlov!',sub:'Fortsätt lära dig Zorbish',q_label:'Vad betyder detta på',q_label2:'Vad är detta på Zorbish?'},da:{home:'Hjem',learn:'Lær',skin:'Udseende',settings:'Indstillinger',greeting:'Zlov!',sub:'Bliv ved med at lære Zorbish',q_label:'Hvad betyder dette på',q_label2:'Hvad er dette på Zorbish?'}};
+const LANG_NAMES={no:'norsk',en:'English',de:'Deutsch',fr:'français',es:'español',sv:'svenska',da:'dansk'};
+const BG_COLORS=['#f0eeff','#fff0f5','#f0fff4','#fff8f0','#f0f8ff','#fdf0ff','#f5f5f5','#fffde7'];
+const SWEATER_COLORS=['#6C63FF','#FF6584','#4CAF50','#FF9800','#2196F3','#E91E63','#009688','#795548','#000000','#FFFFFF'];
+let state={lang:'no',diff:'medium',xp:0,streak:0,wordsLearned:[],lastPlay:null,skin:{gender:'boy',hair:'brown',sweater:'#6C63FF',tone:'light'},bg:'#f0eeff',name:'',lessonStars:{},vipUnlocked:false};
+let currentLesson=null,quizWords=[],quizIdx=0,quizCorrect=0,quizAnswered=false,vipChats=[];
+function loadState(){try{const s=localStorage.getItem('zorbish_state');if(s)state={...state,...JSON.parse(s)};const c=localStorage.getItem('zorbish_chats');if(c)vipChats=JSON.parse(c)}catch(e){}}
+function saveState(){try{localStorage.setItem('zorbish_state',JSON.stringify(state))}catch(e){}}
+function saveChats(){try{localStorage.setItem('zorbish_chats',JSON.stringify(vipChats.slice(-100)))}catch(e){}}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.getElementById('screen-'+id).classList.add('active');const navEl=document.getElementById('nav-'+id);if(navEl)navEl.classList.add('active');if(id==='home')renderHome();if(id==='settings')renderSettings();if(id==='skin')renderSkin();if(id==='vip')renderVIP();}
+function t(key){return(TRANSLATIONS[state.lang]||TRANSLATIONS.no)[key]||key}
+function setLang(lang){state.lang=lang;saveState();applyLang();renderHome()}
+function applyLang(){const T=TRANSLATIONS[state.lang]||TRANSLATIONS.no;document.getElementById('nav-home-lbl').textContent=T.home;document.getElementById('nav-learn-lbl').textContent=T.learn;document.getElementById('nav-skin-lbl').textContent=T.skin;document.getElementById('nav-settings-lbl').textContent=T.settings}
+function renderHome(){applyLang();const T=TRANSLATIONS[state.lang]||TRANSLATIONS.no;document.getElementById('hero-greeting').textContent=state.name?'Zlov, '+state.name+'!':T.greeting;document.getElementById('hero-sub').textContent=T.sub;document.body.style.background=state.bg;document.documentElement.style.setProperty('--bg',state.bg);const level=Math.floor(state.xp/100)+1;const xpInLevel=state.xp%100;document.getElementById('hero-xp').textContent=state.xp+' XP';document.getElementById('hero-level').textContent='Nivå '+level;document.getElementById('xp-bar').style.width=xpInLevel+'%';document.getElementById('stat-streak').textContent=state.streak;document.getElementById('stat-xp').textContent=state.xp;document.getElementById('stat-words').textContent=state.wordsLearned.length;document.getElementById('streak-display').textContent=state.streak;renderLessonList()}
+function renderLessonList(){const LN=LESSON_NAMES[state.lang]||LESSON_NAMES.no;const el=document.getElementById('lesson-list');if(!el)return;el.innerHTML='';LESSONS.forEach(lesson=>{const stars=state.lessonStars[lesson.id]||0;const starStr='⭐'.repeat(stars)+'☆'.repeat(3-stars);const div=document.createElement('div');div.className='lesson-item';div.onclick=()=>startLesson(lesson.id);div.innerHTML='<div class="lesson-icon">'+lesson.icon+'</div><div class="lesson-info"><h3>'+(LN[lesson.nameKey]||lesson.id)+'</h3><p>'+lesson.words.length+' ord · '+lesson.xpPer+' XP</p></div><div class="lesson-stars">'+starStr+'</div>';el.appendChild(div)})}
+function startLesson(lessonId){currentLesson=lessonId;const lesson=LESSONS.find(l=>l.id===lessonId);if(!lesson)return;let words=lesson.words.map(z=>WORDS.find(w=>w.z===z)).filter(Boolean);const reps=state.diff==='easy'?1:state.diff==='hard'?3:2;quizWords=[];for(let i=0;i<reps;i++)quizWords.push(...shuffle([...words]));quizIdx=0;quizCorrect=0;quizAnswered=false;const LN=LESSON_NAMES[state.lang]||LESSON_NAMES.no;document.getElementById('learn-title').textContent=lesson.icon+' '+(LN[lesson.nameKey]||lesson.id);showScreen('learn');showQuestion()}
+function showQuestion(){if(quizIdx>=quizWords.length){endLesson();return}quizAnswered=false;document.getElementById('feedback-bar').className='feedback-bar';document.getElementById('next-btn').style.display='none';const pct=Math.round((quizIdx/quizWords.length)*100);document.getElementById('learn-progress').style.width=pct+'%';document.getElementById('q-counter').textContent=(quizIdx+1)+' / '+quizWords.length;const word=quizWords[quizIdx];const toNative=Math.random()>0.4;const nativeLang=state.lang||'no';const nativeWord=word.translations[nativeLang]||word.translations.no;const T=TRANSLATIONS[state.lang]||TRANSLATIONS.no;if(toNative){document.getElementById('q-label').textContent=T.q_label+' '+LANG_NAMES[nativeLang]+'?';document.getElementById('q-word').textContent=word.z}else{document.getElementById('q-label').textContent=T.q_label2;document.getElementById('q-word').textContent=nativeWord}document.getElementById('q-word').classList.remove('pop');void document.getElementById('q-word').offsetWidth;document.getElementById('q-word').classList.add('pop');const numChoices=state.diff==='hard'?6:4;const correctAnswer=toNative?nativeWord:word.z;const pool=WORDS.filter(w=>w.z!==word.z);const wrong=shuffle(pool).slice(0,numChoices-1).map(w=>toNative?(w.translations[nativeLang]||w.translations.no):w.z);const choices=shuffle([correctAnswer,...wrong]);const el=document.getElementById('choices');el.innerHTML='';el.style.gridTemplateColumns=numChoices>4?'repeat(3,1fr)':'1fr 1fr';choices.forEach(c=>{const btn=document.createElement('div');btn.className='choice';btn.textContent=c;btn.onclick=()=>checkAnswer(btn,c,correctAnswer);el.appendChild(btn)})}
+function checkAnswer(btn,chosen,correct){if(quizAnswered)return;quizAnswered=true;const isCorrect=chosen===correct;btn.classList.add(isCorrect?'correct':'wrong');if(!isCorrect){document.querySelectorAll('.choice').forEach(b=>{if(b.textContent===correct)b.classList.add('reveal')})}else{quizCorrect++;if(!state.wordsLearned.includes(quizWords[quizIdx].z))state.wordsLearned.push(quizWords[quizIdx].z)}const fb=document.getElementById('feedback-bar');if(isCorrect){fb.textContent=['Gorfel! 🎉','Zlov! ⭐','Vrimi! 🔥','Perfekt! 💫'][Math.floor(Math.random()*4)];fb.className='feedback-bar good'}else{fb.textContent='Feil – riktig: '+correct;fb.className='feedback-bar bad'}document.getElementById('next-btn').style.display='block'}
+function nextQuestion(){quizIdx++;showQuestion()}
+function endLesson(){const lesson=LESSONS.find(l=>l.id===currentLesson);const xpActual=Math.max(5,lesson.xpPer);state.xp+=xpActual;const pct=quizCorrect/quizWords.length;const stars=pct===1?3:pct>=0.7?2:1;const prev=state.lessonStars[currentLesson]||0;if(stars>prev)state.lessonStars[currentLesson]=stars;const today=new Date().toDateString();if(state.lastPlay!==today){const yesterday=new Date(Date.now()-86400000).toDateString();state.streak=state.lastPlay===yesterday?state.streak+1:1;state.lastPlay=today}saveState();const emoji=pct===1?'🏆':pct>=0.7?'🎉':'💪';document.getElementById('done-emoji').textContent=emoji;document.getElementById('done-title').textContent=pct===1?'Perfekt!':pct>=0.7?'Bra jobba!':'Øv mer!';document.getElementById('done-msg').textContent=quizCorrect+'/'+quizWords.length+' riktige svar';document.getElementById('done-score').textContent=quizCorrect+'/'+quizWords.length;document.getElementById('done-xp').textContent='+'+xpActual;document.getElementById('done-streak-d').textContent=state.streak;showScreen('done')}
+  function renderSettings(){document.getElementById('lang-select').value=state.lang;document.getElementById('diff-select').value=state.diff;document.getElementById('name-input').value=state.name||'';const bgEl=document.getElementById('bg-swatches');bgEl.innerHTML='';BG_COLORS.forEach(c=>{const s=document.createElement('div');s.className='swatch'+(c===state.bg?' active':'');s.style.background=c;s.onclick=()=>setBG(c);bgEl.appendChild(s)})}
+function setDiff(d){state.diff=d;saveState()}
+function setBG(c){state.bg=c;document.documentElement.style.setProperty('--bg',c);document.body.style.background=c;saveState();renderSettings()}
+function saveName(v){state.name=v;saveState()}
+function renderSkin(){const sw=document.getElementById('sweater-swatches');sw.innerHTML='';SWEATER_COLORS.forEach(c=>{const s=document.createElement('div');s.className='swatch'+(c===state.skin.sweater?' active':'');s.style.background=c;s.onclick=()=>{state.skin.sweater=c;saveState();renderSkin()};sw.appendChild(s)});document.querySelectorAll('#gender-opts .skin-opt').forEach(el=>{el.classList.toggle('active',el.textContent.includes(state.skin.gender==='boy'?'Gutt':state.skin.gender==='girl'?'Jente':'Non'))});document.querySelectorAll('#hair-opts .skin-opt').forEach(el=>{el.classList.toggle('active',el.dataset.hair===state.skin.hair)});document.querySelectorAll('#skin-tone-opts .skin-opt').forEach(el=>{el.classList.toggle('active',el.textContent.includes(state.skin.tone==='light'?'Lys':state.skin.tone==='medium'?'Medium':'Mørk'))});drawAvatar()}
+function setSkin(type,val){state.skin[type]=val;saveState();renderSkin()}
+function drawAvatar(){const canvas=document.getElementById('avatar-canvas');if(!canvas)return;const ctx=canvas.getContext('2d');ctx.clearRect(0,0,120,140);const tones={light:'#FDDBB4',medium:'#C68642',dark:'#6B3A2A'};const skinColor=tones[state.skin.tone]||tones.light;const hairColors={brown:'#6d4c41',black:'#212121',blonde:'#f9a825',red:'#bf360c',blue:'#1565c0',pink:'#e91e63',white:'#bdbdbd'};const hairColor=hairColors[state.skin.hair]||'#6d4c41';const sweaterColor=state.skin.sweater||'#6C63FF';ctx.fillStyle=sweaterColor;ctx.beginPath();ctx.roundRect(20,90,80,60,[10,10,0,0]);ctx.fill();ctx.fillStyle=skinColor;ctx.fillRect(50,82,20,14);ctx.fillStyle=skinColor;ctx.beginPath();ctx.ellipse(60,60,30,32,0,0,Math.PI*2);ctx.fill();ctx.fillStyle=hairColor;if(state.skin.gender==='girl'){ctx.beginPath();ctx.ellipse(60,52,31,22,0,Math.PI,Math.PI*2);ctx.fill();ctx.fillRect(30,52,10,40);ctx.fillRect(80,52,10,40)}else if(state.skin.gender==='non'){ctx.beginPath();ctx.ellipse(60,52,31,22,0,Math.PI,Math.PI*2);ctx.fill();ctx.fillRect(30,52,8,20);ctx.fillRect(82,52,8,20)}else{ctx.beginPath();ctx.ellipse(60,50,31,20,0,Math.PI,Math.PI*2);ctx.fill()}ctx.fillStyle='#2d2d4e';ctx.beginPath();ctx.ellipse(48,58,5,6,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(72,58,5,6,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='white';ctx.beginPath();ctx.ellipse(50,56,2,2,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(74,56,2,2,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#c0392b';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.beginPath();ctx.arc(60,68,10,0.2,Math.PI-0.2);ctx.stroke();ctx.fillStyle='rgba(255,100,100,0.18)';ctx.beginPath();ctx.ellipse(40,68,8,5,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(80,68,8,5,0,0,Math.PI*2);ctx.fill()}
+function renderVIP(){if(state.vipUnlocked){showVIPUnlocked()}else{document.getElementById('vip-lock-view').style.display='';document.getElementById('vip-unlocked-view').style.display='none';document.getElementById('vip-pw-input').value='';document.getElementById('vip-error').textContent=''}}
+function checkVIP(){const pw=document.getElementById('vip-pw-input').value;if(pw==='Emiliander2'){state.vipUnlocked=true;saveState();showVIPUnlocked()}else{document.getElementById('vip-error').textContent='❌ Feil passord. Prøv igjen!';document.getElementById('vip-pw-input').classList.add('shake');setTimeout(()=>document.getElementById('vip-pw-input').classList.remove('shake'),600)}}
+function showVIPUnlocked(){document.getElementById('vip-lock-view').style.display='none';document.getElementById('vip-unlocked-view').style.display='';renderChats()}
+function renderChats(){const el=document.getElementById('chat-area');if(!el)return;el.innerHTML='';if(vipChats.length===0){el.innerHTML='<p style="text-align:center;color:var(--muted);font-size:13px;padding:20px;">Ingen meldinger ennå. Vær den første!</p>';return}vipChats.forEach(msg=>{const div=document.createElement('div');div.className='chat-msg pop';div.innerHTML='<div class="msg-user">'+escapeHtml(msg.user)+(msg.vip?'<span class="vip-tag">VIP</span>':'')+'</div><div class="msg-text">'+escapeHtml(msg.text)+'</div><div class="msg-time">'+msg.time+'</div>';el.appendChild(div)});el.scrollTop=el.scrollHeight}
+function sendChat(){const inp=document.getElementById('chat-input');const text=inp.value.trim();if(!text)return;const userName=state.name||'VIP-bruker';const now=new Date();const timeStr=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');vipChats.push({user:userName,text,time:timeStr,vip:true});saveChats();inp.value='';renderChats()}
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function shuffle(arr){return arr.sort(()=>Math.random()-0.5)}
+loadState();applyLang();renderHome();renderSkin();drawAvatar();
+const today=new Date().toDateString();const yesterday=new Date(Date.now()-86400000).toDateString();
+if(state.lastPlay&&state.lastPlay!==today&&state.lastPlay!==yesterday){state.streak=0;saveState()}
+</script>
+</body>
+</html>
